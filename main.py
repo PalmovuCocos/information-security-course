@@ -1,8 +1,30 @@
 from math import ceil
 
 
-def input_file():
-    pass
+def input_file(f_input):
+    try:
+        with open(f_input, encoding="utf-8") as file:
+            s = file.readline()
+            return s
+    except FileNotFoundError:
+        print("Невозможно открыть файл")
+    except:
+        print("Ошибка при работе с файлом")
+    finally:
+        print(file.closed)
+
+
+def output_file(o_input, answer):
+    try:
+        with open(o_input, "w+", encoding="utf-8") as file:
+            file.write(answer)
+            print("Расшифрованные данные записаны в файл")
+    except FileNotFoundError:
+        print("Невозможно открыть файл")
+    except:
+        print("Ошибка при работе с файлом")
+    finally:
+        print(file.closed)
 
 
 def simple_permutation(s='ЗАСЕДАНИЕ СОСТОИТСЯ ЗАВТРА ЮСТАС', key_w='КОРЕНЬ'):
@@ -34,15 +56,20 @@ def simple_permutation(s='ЗАСЕДАНИЕ СОСТОИТСЯ ЗАВТРА Ю�
                 key[j], key[j+1] = key[j+1], key[j]     # сортируется ключ
                 for k in range(len(table)):
                     table[k][j], table[k][j+1] = table[k][j+1], table[k][j]     # сортируется таблица
-    print(key)
-    return table
+
+    return ''.join([t[i] for i in range(len(table[0])) for t in table])
+
+
+def decoding(s, key):
+    pass
 
 
 if __name__ == '__main__':
-    input_file = input("Введите имя входного файла: ")
-    output_file = input("Введите имя результирующего файла: ")
-    table = simple_permutation()
-    for el in range(len(table)):
-        print(*table[el])
+    input_f = input("Введите имя входного файла: ")
+    s = input_file(input_f)
+    output_f = input("Введите имя результирующего файла: ")
+    decoding_s = simple_permutation()
+    output_file(output_f, decoding_s)
+
 
 
