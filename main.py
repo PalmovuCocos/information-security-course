@@ -27,15 +27,15 @@ def simple_permutation(s='ЗАСЕДАНИЕ СОСТОИТСЯ ЗАВТРА Ю�
 
     for i in table:     # вывод таблицы
         print(i)
-    s_key = sorted(key, key=lambda x: x[0])
 
-    print(s_key)
-    new_table = [[] for _ in range(len(table))]
-    for i in range(len(key)):
-        for j in range(len(new_table)):
-            new_table[j].append(table[j][s_key[i][1]])
-
-    return new_table
+    for i in range(len(key)-1):         # пузырькова сортировка ключа (по алфавиту) и таблицы
+        for j in range(len(key)-2, i-1, -1):
+            if key[j+1][0] < key[j][0]:
+                key[j], key[j+1] = key[j+1], key[j]     # сортируется ключ
+                for k in range(len(table)):
+                    table[k][j], table[k][j+1] = table[k][j+1], table[k][j]     # сортируется таблица
+    print(key)
+    return table
 
 
 if __name__ == '__main__':
