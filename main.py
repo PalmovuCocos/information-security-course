@@ -42,7 +42,6 @@ def simple_permutation(s, key_w):
     :param key_w: ключ с помощью которого будет проходить зашифровка
     :return: Таблица с зашифрованным словом
     """
-
     s = s.replace(' ', '')  # удаление пробелов из текста
     key = [(key_w[i], i) for i in range(len(key_w))]  # добавление позиций для букв ключа
     n = ceil(len(s) / len(key))     # сколько можно раз поделить сообщение на длинну ключа
@@ -107,11 +106,8 @@ def decoding(s, key):
 if __name__ == '__main__':
     input_f = input("Введите имя входного файла: ")
     key_input = input("Введите ключ: ")
-    s = input_file(input_f)
+    data = input_file(input_f)
     output_f = input("Введите имя результирующего файла: ")
-
-    coding_s = decoding(s, key_input)
-    output_file(output_f, coding_s)
-
-
-
+    mode = input("Введите режим работы\nДля кодирования нажмите 1\nДля декодирования нажмите 2\n")
+    output_s = simple_permutation(data, key_input) if mode == '1' else decoding(data, key_input)
+    output_file(output_f, output_s)
