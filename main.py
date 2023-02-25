@@ -27,7 +27,7 @@ def output_file(o_input, answer):
     try:
         with open(o_input, "w+", encoding="utf-8") as file:
             file.write(answer)
-            print("Расшифрованные данные записаны в файл")
+            print("Данные записаны в файл")
     except FileNotFoundError:
         print("Невозможно открыть файл")
     except:
@@ -47,7 +47,7 @@ def simple_permutation(s, key_w):
     key = [(key_w[i], i) for i in range(len(key_w))]  # добавление позиций для букв ключа
     n = ceil(len(s) / len(key))     # сколько можно раз поделить сообщение на длинну ключа
     table = [[] for _ in range(n)]  # создание пустой таблицы
-
+    print("\nВывод ключа до сортировки: ", *[i for i in key])
     for i in range(len(key)):   # Заполнение таблицы
         for j in range(n):
             k = j + i * n   # расчет позиции буквы в строке, для её добавления в таблицу
@@ -63,46 +63,55 @@ def simple_permutation(s, key_w):
                 key[j], key[j+1] = key[j+1], key[j]     # сортируется ключ
                 for k in range(len(table)):
                     table[k][j], table[k][j+1] = table[k][j+1], table[k][j]     # сортируется таблица
-    print('\nТаблица после перестановки')
+    print("\nВывод ключа после сортировки: ", *[i for i in key])
+    print('Таблица после перестановки')
     for i in table:
         print(*i)
     return ''.join([t[i] for i in range(len(table[0])) for t in table])
 
 
-def decoding(s='ЗАСЕДАНИЕ СОСТОИТСЯ ЗАВТРА ЮСТАС', key='КОРЕНЬ'):
+def decoding(s, key):
+    """
+    Функция для декордирования сообщений зашифрованных простой перестановкой
+    :param s: зашифрованная строка
+    :param key: ключ
+    :return: расшифрованное сообщение
+    """
     key = [(key[i], i) for i in range(len(key))]  # добавление позиций для букв ключа
     n = ceil(len(s) / len(key))  # сколько можно раз поделить сообщение на длинну ключа
     table = [[] for _ in range(n)]  # создание пустой таблицы
-
     for i in range(len(key)):  # Заполнение таблицы
         for j in range(n):
             k = j + i * n  # расчет позиции буквы в строке, для её добавления в таблицу
             # если вышли за рамки таблицы, то ставим пробел
             table[j].append(s[k]) if k < len(s) else table[j].append('')
-
+    key = list(sorted(key, key=lambda x: x[0]))
+    print("\nВывод ключа до сортировки по алфавиту: ", *[i for i in key])
+    print("Вывод таблицы до перестановки: ")
     for i in table:  # вывод таблицы
-        print(i)
+        print(*i)
 
-    for i in range(len(key) - 1):  # пузырькова сортировка ключа (по алфавиту) и таблицы
+    for i in range(len(key) - 1):  # пузырькова сортировка ключа (по позиции буквы) и таблицы
         for j in range(len(key) - 2, i - 1, -1):
             if key[j + 1][1] < key[j][1]:
                 key[j], key[j + 1] = key[j + 1], key[j]  # сортируется ключ
                 for k in range(len(table)):
                     table[k][j], table[k][j + 1] = table[k][j + 1], table[k][j]  # сортируется таблица
-    print('\nТаблица после перестановки')
+    print("\nВывод ключа после сортировки: ", *[i for i in key])
+    print('Таблица после перестановки')
     for i in table:
         print(*i)
     return ''.join([t[i] for i in range(len(table[0])) for t in table])
 
 
 if __name__ == '__main__':
-    #input_f = input("Введите имя входного файла: ")
-    #key_input = input("Введите ключ: ")
-    #s = input_file(input_f)
-    #output_f = input("Введите имя результирующего файла: ")
-    coding_s = decoding()
-    # coding_s = decoding(s, key_input)
-    #output_file(output_f, coding_s)
+    input_f = input("Введите имя входного файла: ")
+    key_input = input("Введите ключ: ")
+    s = input_file(input_f)
+    output_f = input("Введите имя результирующего файла: ")
+
+    coding_s = decoding(s, key_input)
+    output_file(output_f, coding_s)
 
 
 
